@@ -129,8 +129,8 @@ print(performance_df)
 ```{python}
 #| label: power-of-trees-visualization
 #| echo: false
-#| fig-width: 8
-#| fig-height: 4
+#| fig-width: 6
+#| fig-height: 3
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -202,8 +202,8 @@ This demonstrates why random forests are so powerful: they transform weak indivi
 ```{python}
 #| label: overfitting-comparison
 #| echo: false
-#| fig-width: 10
-#| fig-height: 4
+#| fig-width: 8
+#| fig-height: 3
 
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor
@@ -306,8 +306,8 @@ This analysis demonstrates why random forests are preferred over individual deci
 ```{python}
 #| label: linear-regression-comparison
 #| echo: false
-#| fig-width: 8
-#| fig-height: 4
+#| fig-width: 6
+#| fig-height: 3
 
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
