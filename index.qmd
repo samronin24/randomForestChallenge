@@ -4,7 +4,7 @@ subtitle: "The Power of Weak Learners"
 format:
   html: default
 execute:
-  echo: true
+  echo: false
   eval: true
 ---
 
@@ -22,7 +22,7 @@ execute:
 
 ```{python}
 #| label: performance-comparison-python
-#| echo: true
+#| echo: false
 #| fig-width: 10
 #| fig-height: 6
 
@@ -135,8 +135,8 @@ print(performance_df)
 ```{python}
 #| label: power-of-trees-visualization
 #| echo: false
-#| fig-width: 12
-#| fig-height: 8
+#| fig-width: 7
+#| fig-height: 5
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -208,8 +208,8 @@ This demonstrates why random forests are so powerful: they transform weak indivi
 ```{python}
 #| label: overfitting-comparison
 #| echo: false
-#| fig-width: 14
-#| fig-height: 6
+#| fig-width: 7
+#| fig-height: 5
 
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor
@@ -309,11 +309,113 @@ This analysis demonstrates why random forests are preferred over individual deci
 
 **Your Task:** Compare random forests to linear regression baseline.
 
-**Create a comparison table showing:**
-- Linear Regression RMSE
-- Random Forest (1 tree) RMSE  
-- Random Forest (100 trees) RMSE
-- Random Forest (1000 trees) RMSE
+```{python}
+#| label: linear-regression-comparison
+#| echo: false
+#| fig-width: 7
+#| fig-height: 5
+
+from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_squared_error, r2_score
+import pandas as pd
+
+# Create and fit linear regression model
+lr = LinearRegression()
+lr.fit(X_train, y_train)
+lr_pred_test = lr.predict(X_test)
+lr_pred_train = lr.predict(X_train)
+lr_rmse_test = np.sqrt(mean_squared_error(y_test, lr_pred_test))
+lr_rmse_train = np.sqrt(mean_squared_error(y_train, lr_pred_train))
+lr_r2_test = r2_score(y_test, lr_pred_test)
+
+# Create and fit random forest models
+rf_1 = RandomForestRegressor(n_estimators=1, random_state=42)
+rf_100 = RandomForestRegressor(n_estimators=100, random_state=42)
+rf_1000 = RandomForestRegressor(n_estimators=1000, random_state=42)
+
+rf_1.fit(X_train, y_train)
+rf_100.fit(X_train, y_train)
+rf_1000.fit(X_train, y_train)
+
+# Get predictions and metrics
+rf_1_pred_test = rf_1.predict(X_test)
+rf_1_pred_train = rf_1.predict(X_train)
+rf_1_rmse_test = np.sqrt(mean_squared_error(y_test, rf_1_pred_test))
+rf_1_rmse_train = np.sqrt(mean_squared_error(y_train, rf_1_pred_train))
+rf_1_r2_test = r2_score(y_test, rf_1_pred_test)
+
+rf_100_pred_test = rf_100.predict(X_test)
+rf_100_pred_train = rf_100.predict(X_train)
+rf_100_rmse_test = np.sqrt(mean_squared_error(y_test, rf_100_pred_test))
+rf_100_rmse_train = np.sqrt(mean_squared_error(y_train, rf_100_pred_train))
+rf_100_r2_test = r2_score(y_test, rf_100_pred_test)
+
+rf_1000_pred_test = rf_1000.predict(X_test)
+rf_1000_pred_train = rf_1000.predict(X_train)
+rf_1000_rmse_test = np.sqrt(mean_squared_error(y_test, rf_1000_pred_test))
+rf_1000_rmse_train = np.sqrt(mean_squared_error(y_train, rf_1000_pred_train))
+rf_1000_r2_test = r2_score(y_test, rf_1000_pred_test)
+
+# Create comparison table
+comparison_data = {
+    'Model': ['Linear Regression', 'Random Forest (1 tree)', 'Random Forest (100 trees)', 'Random Forest (1000 trees)'],
+    'Test RMSE': [lr_rmse_test, rf_1_rmse_test, rf_100_rmse_test, rf_1000_rmse_test],
+    'Training RMSE': [lr_rmse_train, rf_1_rmse_train, rf_100_rmse_train, rf_1000_rmse_train],
+    'Test R²': [lr_r2_test, rf_1_r2_test, rf_100_r2_test, rf_1000_r2_test],
+    'Improvement over Linear Regression (%)': [
+        0,
+        round((lr_rmse_test - rf_1_rmse_test) / lr_rmse_test * 100, 1),
+        round((lr_rmse_test - rf_100_rmse_test) / lr_rmse_test * 100, 1),
+        round((lr_rmse_test - rf_1000_rmse_test) / lr_rmse_test * 100, 1)
+    ]
+}
+
+comparison_df = pd.DataFrame(comparison_data)
+print("Model Performance Comparison")
+print("=" * 50)
+print(comparison_df.to_string(index=False))
+```
+
+**Analysis: When Random Forests Are Worth the Complexity**
+
+The comparison reveals important insights about the trade-offs between simplicity and performance:
+
+**Performance Improvements:**
+- **1 Tree to 100 Trees**: The improvement from 1 tree to 100 trees typically shows a dramatic reduction in RMSE, demonstrating the power of ensemble learning
+- **Linear Regression to 100-Tree Random Forest**: The improvement from linear regression to a 100-tree random forest often shows similar magnitude improvements, suggesting that ensemble learning can provide substantial benefits over linear models
+- **100 to 1000 Trees**: The improvement from 100 to 1000 trees is typically marginal, confirming the principle of diminishing returns
+
+**When Random Forests Are Worth the Complexity:**
+Random forests are worth the added complexity when:
+- **Non-linear relationships exist** in the data that linear regression cannot capture
+- **Feature interactions** are important for prediction accuracy
+- **Performance gains** justify the computational cost and reduced interpretability
+- **Robust predictions** are needed across diverse data patterns
+
+**Real-World Application Scenarios:**
+
+**Choose Linear Regression When:**
+- **Regulatory compliance** requires model interpretability (finance, healthcare)
+- **Business stakeholders** need to understand feature importance through coefficients
+- **Fast inference** is critical (real-time systems, mobile applications)
+- **Data relationships** are approximately linear (sales vs advertising spend, simple pricing models)
+- **Computational resources** are limited (edge devices, embedded systems)
+
+**Choose Random Forests When:**
+- **Prediction accuracy** is more important than interpretability (recommendation systems, fraud detection)
+- **Complex feature interactions** exist (customer behavior, market dynamics)
+- **Non-linear patterns** are present (image recognition, natural language processing)
+- **Robust performance** across diverse data is needed (multi-market applications)
+- **Feature engineering** is challenging (automated feature selection benefits)
+
+**Practical Decision Framework:**
+1. **Start with linear regression** as a baseline - it's fast, interpretable, and often surprisingly effective
+2. **Upgrade to random forests** if linear regression performance is insufficient and the business case supports the added complexity
+3. **Consider the audience** - technical teams can handle complex models, but business stakeholders may prefer interpretable models
+4. **Evaluate the trade-offs** - 10% performance improvement may not justify 10x computational cost in some applications
+
+**Key Insight**: The comparison demonstrates that random forests often provide substantial performance improvements over linear regression, but the decision to use them depends on whether the performance gains justify the added complexity and reduced interpretability for your specific use case. In practice, many successful data science projects start with linear regression and only move to more complex models when the business value is clear.
 
 **Your analysis should address:**
 - The improvement in RMSE when going from 1 tree to 100 trees
@@ -321,8 +423,6 @@ This analysis demonstrates why random forests are preferred over individual deci
 - When random forests are worth the added complexity vs linear regression
 - The trade-offs between interpretability and performance
 
-::: {.callout-important}
-## 📊 Comparison Requirements
 
 Create a clear table comparing:
 
@@ -347,51 +447,3 @@ Include percentage improvements over linear regression for each random forest mo
 
 **What we're looking for:** A compelling 2-3 minute read that demonstrates both the power of ensemble learning and the importance of choosing the right tool for the job.
 :::
-
-### Questions to Answer for 75% Grade on Challenge
-
-1. **Power of More Trees Analysis:** Provide a clear, well-reasoned analysis of how random forest performance improves with more trees. Your analysis should demonstrate understanding of ensemble learning principles and diminishing returns.
-
-### Questions to Answer for 85% Grade on Challenge
-
-2. **Overfitting Analysis:** Provide a thorough analysis comparing decision trees vs random forests in terms of overfitting. Your analysis should explain why individual trees overfit while random forests don't, and the mechanisms that prevent overfitting in ensemble methods.
-
-### Questions to Answer for 95% Grade on Challenge
-
-3. **Linear Regression Comparison:** Your analysis should include a clear comparison table and discussion of when random forests are worth the added complexity vs linear regression. Focus on practical implications for real-world applications.
-
-### Questions to Answer for 100% Grade on Challenge
-
-4. **Professional Presentation:** Your analysis should be written in a professional, engaging style that would be appropriate for a business audience. Use clear visualizations and focus on practical insights rather than technical jargon.
-
-
-**75% Grade Requirements:**
-
-- [ ] Clear analysis of how random forest performance improves with more trees
-- [ ] Discussion of diminishing returns in ensemble learning
-
-**85% Grade Requirements:**
-
-- [ ] Thorough overfitting analysis comparing decision trees vs random forests
-- [ ] Explanation of mechanisms that prevent overfitting in random forests
-
-**95% Grade Requirements:**
-
-- [ ] Complete linear regression comparison with clear table
-- [ ] Discussion of when random forests are worth the complexity
-
-**100% Grade Requirements:**
-
-- [ ] Professional presentation style appropriate for business audience
-- [ ] Clear, engaging narrative that tells a compelling story
-- [ ] Practical insights that would help a real data scientist
-
-**Report Quality (Critical for Higher Grades):**
-
-- [ ] Clear, engaging narrative that tells a story
-- [ ] Focus on the most interesting findings about ensemble learning
-- [ ] Professional writing style (no AI-generated fluff)
-- [ ] Concise analysis that gets to the point
-- [ ] Practical insights that would help a real data scientist
-- [ ] Well-designed visualizations that support your analysis
-
