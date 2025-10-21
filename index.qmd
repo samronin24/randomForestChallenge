@@ -136,7 +136,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Create figure with two subplots
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 6))
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(7,5))
 
 # Plot 1: RMSE vs Number of Trees
 trees = performance_df['Trees']
@@ -241,7 +241,7 @@ for n_tree in n_trees:
     rf_test_rmse.append(np.sqrt(mean_squared_error(y_test, test_pred)))
 
 # Create the visualization
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6))
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(7,5))
 
 # Plot 1: Decision Trees - Overfitting
 ax1.plot(max_depths, dt_train_rmse, 'o-', label='Training RMSE', linewidth=2, markersize=6)
