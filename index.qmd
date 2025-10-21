@@ -119,12 +119,6 @@ performance_df = pd.DataFrame(performance_data)
 print(performance_df)
 ```
 
-:::
-
-## Student Analysis Section: The Power of More Trees {#student-analysis-section}
-
-**Your Task:** Create visualizations and analysis to demonstrate the power of ensemble learning. You'll need to create three key components:
-
 ### 1. The Power of More Trees Visualization
 
 **Create a visualization showing:**
@@ -416,34 +410,3 @@ Random forests are worth the added complexity when:
 4. **Evaluate the trade-offs** - 10% performance improvement may not justify 10x computational cost in some applications
 
 **Key Insight**: The comparison demonstrates that random forests often provide substantial performance improvements over linear regression, but the decision to use them depends on whether the performance gains justify the added complexity and reduced interpretability for your specific use case. In practice, many successful data science projects start with linear regression and only move to more complex models when the business value is clear.
-
-**Your analysis should address:**
-- The improvement in RMSE when going from 1 tree to 100 trees
-- Whether switching from linear regression to 100-tree random forest shows similar improvement
-- When random forests are worth the added complexity vs linear regression
-- The trade-offs between interpretability and performance
-
-
-Create a clear table comparing:
-
-- Linear Regression
-- Random Forest (1 tree)
-- Random Forest (100 trees) 
-- Random Forest (1000 trees)
-
-Include percentage improvements over linear regression for each random forest model.
-:::
-
-**This is an investigative report, not a coding exercise.** You're analyzing random forest models and reporting your findings like a professional analyst would. Think of this as a brief you'd write for a client or manager about the power of ensemble learning and when to use random forests vs simpler approaches.
-
-**What makes a great report:**
-
-- **Clear narrative:** Tell the story of what you discovered about ensemble learning
-- **Insightful analysis:** Focus on the most interesting findings about random forest performance
-- **Professional presentation:** Clean, readable, and engaging
-- **Concise conclusions:** No AI babble or unnecessary technical jargon
-- **Human insights:** Your interpretation of what the performance improvements actually mean
-- **Practical implications:** When random forests are worth the added complexity
-
-**What we're looking for:** A compelling 2-3 minute read that demonstrates both the power of ensemble learning and the importance of choosing the right tool for the job.
-:::
